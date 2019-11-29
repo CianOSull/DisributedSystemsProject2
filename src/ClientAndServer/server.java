@@ -10,8 +10,12 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 public class server implements Runnable {
-    flyVillainFactory facotry = new flyVillainFactory();
-    boolean check = true;
+    private flyVillainFactory facotry = new flyVillainFactory();
+    private boolean check = true;
+    private String absolutePath = "/home/cianosullivan/Desktop/CIT/3rd Year/Semester 1/Java projects/DisributedSystemsProject2" +
+            "/src/battleZones/battle.txt";
+    private File file = new File(absolutePath);
+    private boolean checkFile;
 
     public void run() {
         ServerSocket serverSocket = null;
@@ -30,15 +34,13 @@ public class server implements Runnable {
     }
 
     private boolean villainExist(){
-        String path = "/home/cianosullivan/Desktop/CIT/3rd Year/Semester 1/Java projects/DisributedSystemsProject2" +
-                "/src/battleZones/battle.txt";
         boolean vilExist;
 
         // Deserialization
         try
         {
             // Reading the object from a file
-            FileInputStream file = new FileInputStream(path);
+            FileInputStream file = new FileInputStream(absolutePath);
             ObjectInputStream in = new ObjectInputStream(file);
 
             // Method for deserialization of object
@@ -49,6 +51,7 @@ public class server implements Runnable {
 
             System.out.println("Object has been deserialized ");
             vilExist = true;
+            check = false;
             //System.out.println(vil.getName());
         }
         catch(IOException ex) {
@@ -61,6 +64,17 @@ public class server implements Runnable {
             System.out.println("ClassNotFoundException is caught");
         }
         return vilExist;
+    }
+
+    private void moveFile(){
+        checkFile = file.renameTo(new File("/home/cianosullivan/Desktop/CIT/3rd Year/Semester 1" +
+                "/Java projects/DisributedSystemsProject2/src/battlesDone/battleDone.txt"));
+        if(checkFile){
+            System.out.println("File was moved");
+        }
+        else {
+            System.out.println("Failed");
+        }
     }
 
     private void socketTest6(Socket socket){
@@ -87,6 +101,7 @@ public class server implements Runnable {
 
                 System.out.println("ArrayList 1 >>>: " + vilTest.getName());
                 System.out.println("ArrayList 2 >>>: " + heroTest.getName());
+                moveFile();
             }
             else {
                 OutputStream outputStream = socket.getOutputStream();
