@@ -1,4 +1,4 @@
-package test;
+package villain;
 
 import Factory.flyVillainFactory;
 import PowerPeople.flyVillain;
@@ -19,7 +19,7 @@ public class serializeVillain implements Runnable{
         makeVillain();
     }
 
-    public void makeVillain(){
+    private void makeVillain(){
         flyVillain fly = factory.getVillain();
 
         // Serialization
@@ -36,7 +36,7 @@ public class serializeVillain implements Runnable{
             out.close();
             file.close();
 
-            System.out.println("Object has been serialized");
+            System.out.println("\nVillain has been serialized\n");
 
         }
 

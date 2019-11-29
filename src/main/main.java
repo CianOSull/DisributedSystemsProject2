@@ -2,21 +2,25 @@ package main;
 
 import ClientAndServer.client;
 import ClientAndServer.server;
-import test.serializeVillain;
+import villain.serializeVillain;
 
 public class main {
     public static void main(String[] args){
+        // This is the server thread
         server callServer = new server();
+
+        // This is the client thread
         client callClient = new client();
 
-        // This is for testing purposes. It makes a villain in the text file to be read
+        // This thread creates the villain after a certain amount of time
         serializeVillain ser = new serializeVillain();
-        //ser.makeVillain();
 
+        // Create all the threads to be used
         Thread serverThread = new Thread(callServer);
         Thread clientThread = new Thread(callClient);
         Thread villainThread = new Thread(ser);
 
+        // Start them all
         serverThread.start();
         clientThread.start();
         villainThread.start();
