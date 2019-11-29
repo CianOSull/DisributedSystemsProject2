@@ -66,6 +66,27 @@ public class server implements Runnable {
         return vilExist;
     }
 
+    private void makeVillain(ArrayList<Object> battleArray){
+        // Serialization
+        try
+        {
+            //Saving of object in a file
+            FileOutputStream file = new FileOutputStream("/home/cianosullivan/Desktop/CIT/3rd Year/Semester 1" +
+                    "/Java projects/DisributedSystemsProject2/src/battleZones/battle.txt");
+            ObjectOutputStream out = new ObjectOutputStream(file);
+            // Method for serialization of object
+            out.writeObject(battleArray);
+            out.close();
+            file.close();
+            System.out.println("Battle Array has been serialized");
+        }
+
+        catch(IOException ex)
+        {
+            System.out.println("IOException is caught");
+        }
+    }
+
     private void moveFile(){
         checkFile = file.renameTo(new File("/home/cianosullivan/Desktop/CIT/3rd Year/Semester 1" +
                 "/Java projects/DisributedSystemsProject2/src/battlesDone/battleDone.txt"));
@@ -99,8 +120,9 @@ public class server implements Runnable {
                 flyVillain vilTest = (flyVillain) powerPeopleList.get(0);
                 flyHero heroTest = (flyHero) powerPeopleList.get(1);
 
-                System.out.println("ArrayList 1 >>>: " + vilTest.getName());
-                System.out.println("ArrayList 2 >>>: " + heroTest.getName());
+                // Put the array list into the battle file
+                makeVillain(powerPeopleList);
+                // Move the file to the battles done folder
                 moveFile();
             }
             else {
