@@ -10,26 +10,32 @@ import java.util.ArrayList;
 
 public class client implements Runnable {
     flyHeroFactory factory = new flyHeroFactory();
+    boolean check = true;
 
     public void run() {
         try {
             Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        socketTest6();
-    }
 
-    private void socketTest6(){
-        try {
+            // This creates the socket needed to call
             Socket socket = new Socket("localhost", 8001);
 
+            while(check) {
+                socketTest6(socket);
+                Thread.sleep(3000);
+            }
+        }
+        catch (InterruptedException | IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void socketTest6(Socket socket){
+        try {
             // get the ouput stream from the socket
             OutputStream outputStream = socket.getOutputStream();
             // create an objecto uput stream
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
 
-            boolean checkForVillain = true;
             System.out.println("Checking for a villain");
             objectOutputStream.writeObject("1");
 
@@ -50,7 +56,7 @@ public class client implements Runnable {
 
                 System.out.println("Sending Arraylist to the ServerSocket");
                 objectOutputStream.writeObject(powerPeopleList);
-
+                check = false;
             }
             else {
                 System.out.println("The vilain doesn't exist");

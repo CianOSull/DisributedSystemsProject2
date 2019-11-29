@@ -11,9 +11,22 @@ import java.util.ArrayList;
 
 public class server implements Runnable {
     flyVillainFactory facotry = new flyVillainFactory();
+    boolean check = true;
 
     public void run() {
-        socketTest6();
+        ServerSocket serverSocket = null;
+        try {
+            serverSocket = new ServerSocket(8001);
+            System.out.println("Socket Created");
+            Socket socket = serverSocket.accept();
+
+            while(check) {
+                socketTest6(socket);
+            }
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private boolean villainExist(){
@@ -50,13 +63,8 @@ public class server implements Runnable {
         return vilExist;
     }
 
-    private void socketTest6(){
-        ServerSocket serverSocket = null;
+    private void socketTest6(Socket socket){
         try {
-            serverSocket = new ServerSocket(8001);
-            System.out.println("Socket Created");
-            Socket socket = serverSocket.accept();
-
             // get an input stream from the socket
             InputStream inputStream = socket.getInputStream();
             // create an object input stream
