@@ -8,7 +8,10 @@ public class main {
         server callServer = new server();
         client callClient = new client();
 
+        Thread serverThread = new Thread(callServer);
+        Thread clientThread = new Thread(callClient);
 
-
+        serverThread.start();
+        clientThread.start();
     }
 }

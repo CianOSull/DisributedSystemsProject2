@@ -1,14 +1,26 @@
 package ClientAndServer;
 
-import hero.hero;
-import villain.villain;
+import Factory.flyHeroFactory;
+import PowerPeople.flyHero;
+import PowerPeople.flyVillain;
 
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
 
-public class client {
-    public static void socketTest6(){
+public class client implements Runnable {
+    flyHeroFactory factory = new flyHeroFactory();
+
+    public void run() {
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        socketTest6();
+    }
+
+    private void socketTest6(){
         try {
             Socket socket = new Socket("localhost", 8001);
 
@@ -19,7 +31,7 @@ public class client {
 
             boolean checkForVillain = true;
             System.out.println("Checking for a villain");
-            objectOutputStream.writeObject(checkForVillain);
+            objectOutputStream.writeObject("1");
 
             // get the input stream from the connected socket
             InputStream inputStream = socket.getInputStream();
@@ -28,13 +40,13 @@ public class client {
             if((boolean) objectInputStream.readObject()){
                 System.out.println("The villain Exists");
 
-                villain vil = (villain) objectInputStream.readObject();
+                flyVillain vil = (flyVillain) objectInputStream.readObject();
                 System.out.println(vil.getName());
 
-                hero her = new hero();
+                flyHero flyHer = factory.getHero();
                 ArrayList<Object> powerPeopleList = new ArrayList<>();
                 powerPeopleList.add(vil);
-                powerPeopleList.add(her);
+                powerPeopleList.add(flyHer);
 
                 System.out.println("Sending Arraylist to the ServerSocket");
                 objectOutputStream.writeObject(powerPeopleList);

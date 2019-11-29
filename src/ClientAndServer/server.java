@@ -1,15 +1,22 @@
 package ClientAndServer;
 
-import hero.hero;
-import villain.villain;
+import Factory.flyVillainFactory;
+import PowerPeople.flyHero;
+import PowerPeople.flyVillain;
 
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 
-public class server {
-    public void socketTest6(){
+public class server implements Runnable {
+    flyVillainFactory facotry = new flyVillainFactory();
+
+    public void run() {
+        socketTest6();
+    }
+
+    private void socketTest6(){
         ServerSocket serverSocket = null;
         try {
             serverSocket = new ServerSocket(8001);
@@ -21,21 +28,21 @@ public class server {
             // create an object input stream
             ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
 
-            boolean villainExist = false;
+            boolean villainExist = true;
 
-            if((boolean) objectInputStream.readObject() == villainExist){
+            if(((String) objectInputStream.readObject()).equals("1") & villainExist){
                 OutputStream outputStream = socket.getOutputStream();
                 // create an object output stream from the output stream so we can send an object through it
                 ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
                 objectOutputStream.writeObject(true);
 
-                villain vil = new villain();
+                flyVillain vil = facotry.getVillain();
                 objectOutputStream.writeObject(vil);
 
                 ArrayList<Object> powerPeopleList = (ArrayList<Object>) objectInputStream.readObject();
 
-                villain vilTest = (villain) powerPeopleList.get(0);
-                hero heroTest = (hero) powerPeopleList.get(1);
+                flyVillain vilTest = (flyVillain) powerPeopleList.get(0);
+                flyHero heroTest = (flyHero) powerPeopleList.get(1);
 
                 System.out.println("ArrayList 1 >>>: " + vilTest.getName());
                 System.out.println("ArrayList 2 >>>: " + heroTest.getName());
