@@ -16,6 +16,40 @@ public class server implements Runnable {
         socketTest6();
     }
 
+    private boolean villainExist(){
+        String path = "/home/cianosullivan/Desktop/CIT/3rd Year/Semester 1/Java projects/DisributedSystemsProject2" +
+                "/src/battleZones/battle.txt";
+        boolean vilExist;
+
+        // Deserialization
+        try
+        {
+            // Reading the object from a file
+            FileInputStream file = new FileInputStream(path);
+            ObjectInputStream in = new ObjectInputStream(file);
+
+            // Method for deserialization of object
+            flyVillain vil = (flyVillain) in.readObject();
+
+            in.close();
+            file.close();
+
+            System.out.println("Object has been deserialized ");
+            vilExist = true;
+            //System.out.println(vil.getName());
+        }
+        catch(IOException ex) {
+            vilExist = false;
+            System.out.println("IThere is no villain inside of the file");
+        }
+
+        catch(ClassNotFoundException ex) {
+            vilExist = false;
+            System.out.println("ClassNotFoundException is caught");
+        }
+        return vilExist;
+    }
+
     private void socketTest6(){
         ServerSocket serverSocket = null;
         try {
@@ -28,9 +62,8 @@ public class server implements Runnable {
             // create an object input stream
             ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
 
-            boolean villainExist = true;
-
-            if(((String) objectInputStream.readObject()).equals("1") & villainExist){
+            // This is a poll check, when it recieves a one it will check if the villain exists
+            if(((String) objectInputStream.readObject()).equals("1") & villainExist()){
                 OutputStream outputStream = socket.getOutputStream();
                 // create an object output stream from the output stream so we can send an object through it
                 ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
