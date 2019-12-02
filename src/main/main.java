@@ -1,5 +1,4 @@
 package main;
-
 import ClientAndServer.client;
 import ClientAndServer.server;
 import villain.serializeVillain;

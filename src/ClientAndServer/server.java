@@ -1,8 +1,6 @@
 package ClientAndServer;
-
 import Factory.flyVillainFactory;
 import PowerPeople.flyVillain;
-
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
