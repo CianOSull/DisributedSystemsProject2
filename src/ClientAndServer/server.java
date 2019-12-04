@@ -1,17 +1,17 @@
 package ClientAndServer;
-import Factory.flyVillainFactory;
 import PowerPeople.flyVillain;
+
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 
 public class server implements Runnable {
-    private flyVillainFactory facotry = new flyVillainFactory();
     private boolean check = true;
     private String absolutePath = "/home/cianosullivan/Desktop/CIT/3rd Year/Semester 1/Java projects/DisributedSystemsProject2" +
             "/src/battleZones/battle.txt";
     private File file = new File(absolutePath);
+    private flyVillain vil;
 
     public void run() {
         //ServerSocket serverSocket = null;
@@ -41,7 +41,7 @@ public class server implements Runnable {
             ObjectInputStream in = new ObjectInputStream(file);
 
             // Method for deserialization of object
-            flyVillain vil = (flyVillain) in.readObject();
+            vil = (flyVillain) in.readObject();
 
             // Close the unneeded streams
             in.close();
@@ -117,7 +117,7 @@ public class server implements Runnable {
                 objectOutputStream.writeObject(true);
 
                 // Create the villain
-                flyVillain vil = facotry.getVillain();
+                //flyVillain vil = facotry.getVillain();
                 // Send the villain to the client
                 objectOutputStream.writeObject(vil);
 

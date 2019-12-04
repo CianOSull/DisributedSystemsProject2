@@ -3,7 +3,7 @@ import ClientAndServer.client;
 import ClientAndServer.server;
 import villain.serializeVillain;
 
-public class main {
+public class socketMain {
     public static void main(String[] args){
         // This is the server thread
         server callServer = new server();
