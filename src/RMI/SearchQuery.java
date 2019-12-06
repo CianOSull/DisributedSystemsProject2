@@ -5,6 +5,9 @@ package RMI;
 import PowerPeople.flyVillain;
 
 import java.io.*;
+import java.net.MalformedURLException;
+import java.rmi.Naming;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
@@ -14,11 +17,17 @@ public class SearchQuery extends UnicastRemoteObject implements Search {
             "/src/battleZones/battle.txt";
     private File file = new File(absolutePath);
     private flyVillain vil;
+    private Client clientAccess;
 
     // Default constructor to throw RemoteException
     // from its parent constructor
     public SearchQuery() throws RemoteException {
         super();
+    }
+
+    public void addClient(String rmiCon, String rmiName) throws RemoteException, MalformedURLException, NotBoundException {
+        clientAccess = (Client) Naming.lookup(rmiCon +  rmiName);
+        System.out.println("Client connected");
     }
 
     // This checks if the villain exists inside of the battle file
@@ -57,10 +66,18 @@ public class SearchQuery extends UnicastRemoteObject implements Search {
         return vilExist;
     }
 
-    // Implementation of the query interface
-    public boolean query(String search) throws RemoteException {
-        // This checks if the villain exist in the text file and if it does then it sets vil to it
-        return search.equals("1") & villainExist();
+    public void query(int poll) throws RemoteException{
+        if(poll == 1){
+            while(!villainExist()){
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            System.out.println("The villain will be sent");
+            clientAccess.alert();
+        }
     }
 
     public flyVillain sendVillain() throws RemoteException {
