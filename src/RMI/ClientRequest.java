@@ -49,7 +49,7 @@ public class ClientRequest implements Runnable {
 
             if(answer){
                 result = access.sendVillain();
-                System.out.println("Status of the villain: " + result.getName());
+                System.out.println("Name of the villain: " + result.getName());
 
                 ArrayList<Object> peopleList = new ArrayList<Object>();
                 flyHero her = factory.getHero();
